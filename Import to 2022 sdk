@@ -1,0 +1,133 @@
+Step 1 — Prepare the legacy project
+
+Open your Unity 2019 VRChat project.
+
+Duplicate your project folder as a backup (never work in the only copy).
+
+Open the duplicated project.
+
+Open the scene(s) you want to export.
+
+In the Hierarchy, expand everything and verify nothing is missing in the inspector (null references are okay; just make sure meshes and materials exist).
+
+Step 2 — Strip out unwanted components
+
+We don’t want scripts or SDK objects in the export.
+
+In Hierarchy, select the root GameObject(s) of your scene.
+
+Use Ctrl + A inside the root to select all child objects.
+
+In the Inspector, remove the following components:
+
+All MonoBehaviours (custom scripts, old interaction scripts, etc.)
+
+VRC SDK components (VRC_Trigger, VRC_Station, VRC_AvatarPedestal, etc.)
+
+Any editor-only components (e.g., debug helpers, custom gizmos)
+
+Keep:
+
+MeshFilter / MeshRenderer
+
+SkinnedMeshRenderer
+
+Animator / Animation (clips only)
+
+Colliders
+
+AudioSource (clips only)
+
+Lights
+
+Transforms
+
+Materials & Textures
+
+⚡ Tip: Use the search bar in the Inspector (t:MonoBehaviour) to highlight all scripts in one go.
+
+Step 3 — Fix references
+
+Make sure all materials, textures, meshes, audio clips, and animations are in the Assets/ folder.
+
+If some assets are outside Assets/, drag them in. Unity packages will only export what’s in Assets/.
+
+Step 4 — Create a temporary parent object
+
+Create an empty GameObject at the root of your scene (call it ExportRoot).
+
+Move all remaining hierarchy under this object.
+
+This ensures you can import one prefab-like container in the new project.
+
+Step 5 — Export as UnityPackage
+
+In the Project window, select the folders containing:
+
+Models
+
+Textures
+
+Materials
+
+Animations
+
+Audio
+
+Right-click → Export Package…
+
+In the export window:
+
+Check “Include Dependencies”
+
+Uncheck Scripts and SDK folders manually if they show up
+
+Save the .unitypackage somewhere accessible.
+
+⚡ Tip: You can also export the ExportRoot GameObject as a prefab inside the package, so the hierarchy structure is preserved.
+
+Step 6 — Import into Unity 2022 + SDK3
+
+Open a fresh Unity 2022 LTS project.
+
+Install the latest VRChat SDK3 + UdonSharp.
+
+Import the .unitypackage you exported:
+
+Assets → Import Package → Custom Package
+
+Only check the assets you want (you can deselect redundant files if needed)
+
+Verify:
+
+Meshes render correctly
+
+Animations play
+
+Audio clips are present
+
+Hierarchy matches your original structure
+
+Step 7 — Rebuild logic
+
+Now your project is “blank slate + content”:
+
+Scripts → rebuild in UdonSharp
+
+Teleports, interactions, AI → re-author from scratch
+
+Shaders → reassign or upgrade
+
+Networking → implement cleanly in SDK3
+
+⚡ Optional: Fast-tracking multiple worlds
+
+Repeat the same pipeline for any other VRChat world assets you want to merge.
+
+Keep all exported .unitypackage files separate until you decide which assets go into the new scene.
+
+This way, you can mix and match models, props, and environments without touching legacy scripts.
+
+If you want, I can draft a ready-to-go “export checklist” for any world, which is basically a one-page workflow so you can do multiple exports without missing anything and without touching scripts or SDK components. It’s very handy if you plan to merge multiple sources.
+
+Do you want me to make that checklist?
